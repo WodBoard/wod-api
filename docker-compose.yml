@@ -1,0 +1,25 @@
+version: '3'
+services:
+  mongo:
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: rootpasswd123
+    ports:
+      - 27017:27017
+
+  web:
+    build: .
+    restart: always
+    depends_on:
+      - mongo
+    ports:
+      - 4242:4242
+    environment:
+      MONGO_USERNAME: root
+      MONGO_PASSWORD: rootpasswd123
+      MONGO_URI: mongodb://localhost:27017
+      LISTEN_ADDR: :4242
+    volumes:
+      - ./:/go/src/github.com/WodBoard/wod-api

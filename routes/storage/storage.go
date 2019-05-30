@@ -7,12 +7,15 @@ import (
 // Storage contains the different methods to store data into mongodb
 // and wraps the connection and communication with mongo instance.
 type Storage struct {
-	DBClient *mongo.Client
+	DBClient       *mongo.Client
+	usersDatabase  *mongo.Database
+	loginsDatabase *mongo.Database
 }
 
 // NewStorage returns a new instance of Storage structure
 func NewStorage(mongoClient *mongo.Client) *Storage {
 	return &Storage{
-		DBClient: mongoClient,
+		DBClient:      mongoClient,
+		usersDatabase: mongoClient.Database("users"),
 	}
 }

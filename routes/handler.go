@@ -1,55 +1,78 @@
 package routes
 
 import (
-	"net/http"
+	"log"
+	"time"
 
+	user "github.com/WodBoard/models/user/go"
 	"github.com/WodBoard/wod-api/routes/storage"
-	"github.com/gin-gonic/contrib/sessions"
+	"github.com/appleboy/gin-jwt"
 	"github.com/gin-gonic/gin"
 )
+
+var identityKey = "id"
 
 // Handler is defines the structure handling every route
 type Handler struct {
 	Storage *storage.Storage
-	Lol     string
+	engine  *gin.Engine
+	addr    string
 }
 
-// AuthMiddleware serves as the middleware auth for every route but /login and /signup
-func (h *Handler) AuthMiddleware(auths ...string) gin.HandlerFunc {
-	return func(c *gin.Context) {
-		session := sessions.Default(c)
-		user := session.Get("user")
-		if user == nil {
-			c.JSON(http.StatusUnauthorized, gin.H{"error": "user needs to be signed in to access this service"})
-			c.Abort()
-			return
-		}
-		if len(auths) != 0 {
-			authType := session.Get("authType")
-			if authType == nil {
-				c.JSON(http.StatusForbidden, gin.H{"error": "invalid request, restricted endpoint"})
-				c.Abort()
-				return
-			}
-		}
-		// add session verification here, like checking if the user and authType
-		// combination actually exists if necessary. Try adding caching this (redis)
-		// since this middleware might be called a lot
-		c.Next()
+// NewHandler returns a fresh instance of Handler struct
+func NewHandler(storage *storage.Storage, addr string) *Handler {
+	e := gin.Default()
+	return &Handler{
+		Storage: storage,
+		engine:  e,
+		addr:    addr,
 	}
 }
 
 // HandleRoutes defines the bindings between routes and functions
-func (h *Handler) HandleRoutes(r *gin.Engine) {
-	api := r.Group("/")
+func (h *Handler) HandleRoutes() {
+	// JWT middleware
+	secretKey := "MyRandomHashingKeyForWod9876543210"
+	authMiddleware, err := jwt.New(&jwt.GinJWTMiddleware{
+		Realm:       "wod",
+		Key:         []byte(secretKey),
+		Timeout:     time.Hour * 24,
+		MaxRefresh:  time.Hour,
+		IdentityKey: identityKey,
+		PayloadFunc: func(data interface{}) jwt.MapClaims {
+			if v, ok := data.(*user.User); ok {
+				return jwt.MapClaims{
+					identityKey: v.Username,
+				}
+			}
+			return jwt.MapClaims{}
+		},
+		IdentityHandler: func(c *gin.Context) interface{} {
+			claims := jwt.ExtractClaims(c)
+			return &user.User{
+				Username: claims[identityKey].(string),
+			}
+		},
+		Authenticator: h.Authenticator,
+		Authorizator:  h.Authorizator,
+		Unauthorized:  h.Unauthorized,
+		TokenLookup:   "header: Authorization, query: token, cookie: jwt",
+		TokenHeadName: "Bearer",
+		TimeFunc:      time.Now,
+	})
+	if err != nil {
+		log.Fatalf("Cannot initialize middleware: %s\n", err.Error())
+	}
+
+	api := h.engine.Group("/")
 	{
-		api.POST("/login", h.Login)
+		api.POST("/login", authMiddleware.LoginHandler)
 		api.POST("/signup", h.Signup)
 	}
-	apiAuth := api.Group("/")
+	auth := api.Group("/")
 	{
-		apiAuth.Use(h.AuthMiddleware())
-		apiAuth.GET("/logout", h.Logout)
-		apiAuth.GET("/ping", h.Ping)
+		auth.Use(authMiddleware.MiddlewareFunc())
+		auth.GET("/hello", h.Hello)
 	}
+	h.engine.Run(h.addr)
 }

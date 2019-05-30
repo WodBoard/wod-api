@@ -19,7 +19,7 @@ services:
     environment:
       MONGO_USERNAME: root
       MONGO_PASSWORD: rootpasswd123
-      MONGO_URI: mongodb://localhost:27017
+      MONGO_URI: mongodb://mongo:27017
       LISTEN_ADDR: :4242
     volumes:
       - ./:/go/src/github.com/WodBoard/wod-api

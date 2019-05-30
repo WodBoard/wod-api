@@ -3,12 +3,10 @@ package main
 import (
 	"context"
 	"fmt"
-	"net/http"
 	"os"
 
-	"github.com/WodBoard/wod-api/storage"
-	"github.com/gin-gonic/contrib/sessions"
-	"github.com/gin-gonic/gin"
+	"github.com/WodBoard/wod-api/routes"
+	"github.com/WodBoard/wod-api/routes/storage"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
@@ -35,13 +33,7 @@ func main() {
 	}
 
 	storage := storage.NewStorage(mongoClient)
-	handler := &Handler{
-		Lol:     "lolilol",
-		Storage: storage,
-	}
+	handler := routes.NewHandler(storage, os.Getenv("LISTEN_ADDR"))
 
-	r := gin.Default()
-	handler.HandleRoutes(r)
-
-	r.Run(os.Getenv("LISTEN_ADDR"))
+	handler.HandleRoutes()
 }

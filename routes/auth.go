@@ -16,8 +16,8 @@ func (h *Handler) Authenticator(c *gin.Context) (interface{}, error) {
 	if err := c.ShouldBind(&loginReq); err != nil {
 		return "", jwt.ErrMissingLoginValues
 	}
-	email := loginReq.Username
-	password := loginReq.Password
+	email := loginReq.GetEmail()
+	password := loginReq.GetPassword()
 
 	login, err := h.Storage.GetLoginByEmail(ctx, email)
 	if err != nil {
@@ -49,7 +49,7 @@ func (h *Handler) Authenticator(c *gin.Context) (interface{}, error) {
 func (h *Handler) Authorizator(data interface{}, c *gin.Context) bool {
 	if v, ok := data.(*user.User); ok {
 		ctx := context.Background()
-		_, err := h.Storage.GetUserByEmail(ctx, v.Username)
+		_, err := h.Storage.GetUserByEmail(ctx, v.GetEmail())
 		return err == nil
 	}
 	return false

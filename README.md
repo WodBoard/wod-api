@@ -27,7 +27,7 @@ You can get a token by logging in.
 
 To signup, you need to do as shown below:
 ```
-http --json POST http://localhost:4242/signup username=patrice@gmail.com password=mdp123 firstname=patrice lastname=michel
+http --json POST http://localhost:4242/signup email=patrice@gmail.com password=mdp123 firstname=patrice lastname=michel weight=3.14 height=6.7 picture_url=prout.png birthday=1994-12-31T00:00:00Z
 ```
 
 The server should return you en empty response with an ok status (200), which means the user `patrice@gmail.com` is now successfully registered.
@@ -70,13 +70,20 @@ http GET "http://localhost:4242/hello" "Authorization: Bearer eyJhbGciOiJIUzI1Ni
 If you specified a correct token, the http response should have a 200 status and the json content should be like the following:
 ```
 HTTP/1.1 200 OK
-Content-Length: 74
+Content-Length: 185
 Content-Type: application/json; charset=utf-8
-Date: Thu, 30 May 2019 19:27:52 GMT
+Date: Sun, 16 Jun 2019 17:30:52 GMT
 
 {
+    "birthday": {
+        "seconds": 788832000
+    },
+    "email": "patrice@gmail.com",
     "firstname": "patrice",
+    "height": 6.699999809265137,
     "lastname": "michel",
-    "username": "patrice@gmail.com"
+    "picture_url": "prout.png",
+    "weight": 3.140000104904175
 }
+
 ```

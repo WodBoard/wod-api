@@ -41,7 +41,7 @@ Date: Thu, 30 May 2019 19:11:58 GMT
 
 To login, you need to do as shown below:
 ```
-http --json POST http://localhost:4242/login username=patrice@gmail.com password=mdp123
+http --json POST http://localhost:4242/login email=patrice@gmail.com password=mdp123
 ```
 
 If you successfully logged in, the server should reply you with a status 200 and a json response containing your token.

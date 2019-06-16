@@ -3,19 +3,22 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:1e7127913e1995b70ab0478d1a4ed6d540850fb708d492367400d5d9dafb9c06"
+  digest = "1:2068749cc9263578f0f7a8c34e80cc26dda8b0970ff0a3cb88d719471749e12f"
   name = "github.com/WodBoard/models"
-  packages = ["user/go"]
+  packages = [
+    "training/go",
+    "user/go",
+  ]
   pruneopts = "UT"
-  revision = "0918387415cbd78d8e502b5f30523fa7567e20dd"
+  revision = "dbb309737189f1428e8bd4dc3bbd05bda606c115"
 
 [[projects]]
-  digest = "1:7e1c6afb9977b57b7a912dbc8fc35a68fae1cde38237197041d4600b4dbf5c9c"
+  digest = "1:69f5f537d94e41742dfffed2f11ba0f95d6a803cf6ad63ac79e20b6a27948aca"
   name = "github.com/appleboy/gin-jwt"
   packages = ["."]
   pruneopts = "UT"
-  revision = "633d983b91f09beefb1128c4558d4642a379c602"
-  version = "v2.6.0"
+  revision = "8135d5fe23da9021d7dceeee4d60e41b3a66a46c"
+  version = "v2.6.2"
 
 [[projects]]
   digest = "1:76dc72490af7174349349838f2fe118996381b31ea83243812a97e5a0fd5ed55"
@@ -26,12 +29,12 @@
   version = "v3.2.0"
 
 [[projects]]
-  branch = "master"
-  digest = "1:a4b5a6b32f33323c7850fae4ec085a0fbac3be93c057b6b8cef5bcabe24645ac"
+  digest = "1:3ee1d175a75b911a659fbd860060874c4f503e793c5870d13e5a0ede529a63cf"
   name = "github.com/gin-contrib/sse"
   packages = ["."]
   pruneopts = "UT"
-  revision = "5545eab6dad3bbbd6c5ae9186383c2a9d23c0dae"
+  revision = "54d8467d122d380a14768b6b4e5cd7ca4755938f"
+  version = "v0.1.0"
 
 [[projects]]
   digest = "1:d8bd2a337f6ff2188e08f72c614f2f3f0fd48e6a7b37a071b197e427d77d3a47"
@@ -55,12 +58,17 @@
   version = "v1.8.0"
 
 [[projects]]
-  digest = "1:318f1c959a8a740366fce4b1e1eb2fd914036b4af58fbd0a003349b305f118ad"
+  digest = "1:2c4aee153877ce0ab02a8025fb54bb94debd47301576a6ab06d53f9b3e2a3a27"
   name = "github.com/golang/protobuf"
-  packages = ["proto"]
+  packages = [
+    "jsonpb",
+    "proto",
+    "ptypes/struct",
+    "ptypes/timestamp",
+  ]
   pruneopts = "UT"
-  revision = "c823c79ea1570fb5ff454033735a8e68575d1d0f"
-  version = "v1.3.0"
+  revision = "b5d812f8a3706043e23a9cd5babf2e5423744d30"
+  version = "v1.3.1"
 
 [[projects]]
   branch = "master"
@@ -79,12 +87,12 @@
   version = "v1.1.6"
 
 [[projects]]
-  digest = "1:e150b5fafbd7607e2d638e4e5cf43aa4100124e5593385147b0a74e2733d8b0d"
+  digest = "1:9b90c7639a41697f3d4ad12d7d67dfacc9a7a4a6e0bbfae4fc72d0da57c28871"
   name = "github.com/mattn/go-isatty"
   packages = ["."]
   pruneopts = "UT"
-  revision = "c2a7a6ca930a4cd0bc33a3f298eb71960732a3a7"
-  version = "v0.0.7"
+  revision = "1311e847b0cb909da63b5fecfb5370aa66236465"
+  version = "v0.0.8"
 
 [[projects]]
   digest = "1:33422d238f147d247752996a26574ac48dcf472976eda7f5134015f06bf16563"
@@ -127,7 +135,7 @@
   revision = "73f8eece6fdcd902c185bf651de50f3828bed5ed"
 
 [[projects]]
-  digest = "1:026f6e643ff4f5bdbc26c673882da3c174545dd7b7d423846e1a8a4f7a4fc1b9"
+  digest = "1:6274d7d09c6836ab5deba524155f29c77ce0ae86e853cd6fc3a51147465f8c8f"
   name = "go.mongodb.org/mongo-driver"
   packages = [
     "bson",
@@ -162,8 +170,8 @@
     "x/network/wiremessage",
   ]
   pruneopts = "UT"
-  revision = "fd38aea397a6b7fdd52b5528e4cfd683821e7b39"
-  version = "v1.0.1"
+  revision = "582ff343271e8893d785ff094855498c285bce0a"
+  version = "v1.0.3"
 
 [[projects]]
   branch = "master"
@@ -171,7 +179,7 @@
   name = "golang.org/x/crypto"
   packages = ["pbkdf2"]
   pruneopts = "UT"
-  revision = "cbcb750295291b33242907a04be40e80801d0cfc"
+  revision = "5c40567a22f818bd14a1ea7245dad9f8ef0691aa"
 
 [[projects]]
   branch = "master"
@@ -183,11 +191,11 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:4fc43e824f7e546353de724c00507b1d9c0bab56344b10c2330a97f166a0fba7"
+  digest = "1:010311506e3917b54487c35a4277e2709678a40c1587d82492c40b78b6a0a01d"
   name = "golang.org/x/sys"
   packages = ["unix"]
   pruneopts = "UT"
-  revision = "a5b02f93d862f065920dd6a40dddc66b60d0dec4"
+  revision = "93c9922d18aeb82498a065f07aec7ad7fa60dfb7"
 
 [[projects]]
   digest = "1:1093f2eb4b344996604f7d8b29a16c5b22ab9e1b25652140d3fede39f640d5cd"
@@ -235,9 +243,11 @@
   analyzer-name = "dep"
   analyzer-version = 1
   input-imports = [
+    "github.com/WodBoard/models/training/go",
     "github.com/WodBoard/models/user/go",
     "github.com/appleboy/gin-jwt",
     "github.com/gin-gonic/gin",
+    "github.com/golang/protobuf/jsonpb",
     "go.mongodb.org/mongo-driver/mongo",
     "go.mongodb.org/mongo-driver/mongo/options",
     "gopkg.in/mgo.v2/bson",

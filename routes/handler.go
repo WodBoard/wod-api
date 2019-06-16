@@ -6,7 +6,7 @@ import (
 
 	user "github.com/WodBoard/models/user/go"
 	"github.com/WodBoard/wod-api/routes/storage"
-	"github.com/appleboy/gin-jwt"
+	jwt "github.com/appleboy/gin-jwt"
 	"github.com/gin-gonic/gin"
 )
 
@@ -42,7 +42,7 @@ func (h *Handler) HandleRoutes() {
 		PayloadFunc: func(data interface{}) jwt.MapClaims {
 			if v, ok := data.(*user.User); ok {
 				return jwt.MapClaims{
-					identityKey: v.Username,
+					identityKey: v.GetEmail(),
 				}
 			}
 			return jwt.MapClaims{}
@@ -50,7 +50,7 @@ func (h *Handler) HandleRoutes() {
 		IdentityHandler: func(c *gin.Context) interface{} {
 			claims := jwt.ExtractClaims(c)
 			return &user.User{
-				Username: claims[identityKey].(string),
+				Email: claims[identityKey].(string),
 			}
 		},
 		Authenticator: h.Authenticator,
@@ -73,6 +73,7 @@ func (h *Handler) HandleRoutes() {
 	{
 		auth.Use(authMiddleware.MiddlewareFunc())
 		auth.GET("/hello", h.Hello)
+		auth.GET("/trainings", h.Trainings)
 	}
 	h.engine.Run(h.addr)
 }

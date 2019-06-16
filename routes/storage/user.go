@@ -18,7 +18,7 @@ func (s *Storage) GetUserByEmail(ctx context.Context, email string) (*user.User,
 	if users == nil {
 		return nil, errors.New("error: couldn't fetch users collection")
 	}
-	err := users.FindOne(ctx, bson.M{"username": email}).Decode(&res)
+	err := users.FindOne(ctx, bson.M{"email": email}).Decode(&res)
 	if err != nil {
 		return nil, err
 	}

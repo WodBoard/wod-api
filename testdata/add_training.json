@@ -1,0 +1,19 @@
+{
+   "name":"MyFirstTrainingEver",
+   "type":3,
+   "exercises":[
+      {
+         "movement":1,
+         "name":"Yoga"
+      },
+      {
+         "movement":2,
+         "name":"Velo"
+      },
+      {
+         "movement":2,
+         "name":"Tapis"
+      }
+   ],
+   "time_cap":6000
+}

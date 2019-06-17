@@ -85,5 +85,99 @@ Date: Sun, 16 Jun 2019 17:30:52 GMT
     "picture_url": "prout.png",
     "weight": 3.140000104904175
 }
+```
 
+### Trainings
+
+The following endpoints will let you create a new personal training, and also fetch a list of them.
+
+#### Add a new training
+
+This is a POST request with a json body containing your new training characteristics.
+Json body (./testdata/add_training.json):
+```
+cat testdata/add_training.json 
+{
+   "name":"MyFirstTrainingEver",
+   "type":3,
+   "exercises":[
+      {
+         "movement":1,
+         "name":"Yoga"
+      },
+      {
+         "movement":2,
+         "name":"Velo"
+      },
+      {
+         "movement":2,
+         "name":"Tapis"
+      }
+   ],
+   "time_cap":6000
+}
+```
+
+The actual request to insert it in our database:
+```
+http --json POST "http://localhost:4242/trainings" "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1NjA4ODkxMjAsImlkIjoicGF0cmljaW9AZ21haWwuY29tIiwib3JpZ19pYXQiOjE1NjA4MDI3MjB9.LYJW3Oy1kaG2-GoH2UXCF1Xk2AGv4O0dx-j4MsFlt1Q" < ./testdata/add_training.json
+HTTP/1.1 200 OK
+Content-Length: 157
+Content-Type: application/json; charset=utf-8
+Date: Mon, 17 Jun 2019 21:17:56 GMT
+
+{
+    "exercises": [
+        {
+            "movement": 1,
+            "name": "Yoga"
+        },
+        {
+            "movement": 2,
+            "name": "Velo"
+        },
+        {
+            "movement": 2,
+            "name": "Tapis"
+        }
+    ],
+    "name": "MyFirstTrainingEver",
+    "time_cap": 6000,
+    "type": 3
+}
+```
+
+If everything went perfectly, you should be returned an http status of 200 and a json object corresponding to the one you just sent.
+
+#### List your trainings
+
+List your trainings is a simple GET endpoints to retrieve all trainings bound to your account:
+```
+http GET "http://localhost:4242/trainings" "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1NjA4ODkxMjAsImlkIjoicGF0cmljaW9AZ21haWwuY29tIiwib3JpZ19pYXQiOjE1NjA4MDI3MjB9.LYJW3Oy1kaG2-GoH2UXCF1Xk2AGv4O0dx-j4MsFlt1Q"
+HTTP/1.1 200 OK
+Content-Length: 633
+Content-Type: application/json; charset=utf-8
+Date: Mon, 17 Jun 2019 21:30:51 GMT
+
+[
+    {
+        "exercises": [
+            {
+                "movement": 1,
+                "name": "Yoga"
+            },
+            {
+                "movement": 2,
+                "name": "Velo"
+            },
+            {
+                "movement": 2,
+                "name": "Tapis"
+            }
+        ],
+        "name": "MyFirstTrainingEver",
+        "time_cap": 6000,
+        "type": 3
+    }
+]
 ```

@@ -74,6 +74,7 @@ func (h *Handler) HandleRoutes() {
 		auth.Use(authMiddleware.MiddlewareFunc())
 		auth.GET("/hello", h.Hello)
 		auth.GET("/trainings", h.Trainings)
+		auth.POST("/trainings", h.AddTraining)
 	}
 	h.engine.Run(h.addr)
 }

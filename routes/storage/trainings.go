@@ -3,6 +3,7 @@ package storage
 import (
 	"context"
 	"errors"
+	"log"
 	"time"
 
 	training "github.com/WodBoard/models/training/go"
@@ -12,30 +13,34 @@ import (
 // TrainingByEmail is a struct that contains email binding for a training
 // to find it in storage
 type TrainingByEmail struct {
-	Email    string
-	Training training.Training
+	Email    string            `bson:"email"`
+	Training training.Training `bson:"training"`
 }
 
 // GetTrainingsByEmail fetches a list of trainings by its email in mongo
 func (s *Storage) GetTrainingsByEmail(ctx context.Context, email string) ([]*training.Training, error) {
 	var res []*training.Training
-	var mongoRes []TrainingByEmail
 
 	ctx, _ = context.WithTimeout(ctx, time.Second*4)
 	trainings := s.usersDatabase.Collection("trainings")
 	if trainings == nil {
-		return nil, errors.New("error: couldn't fetch users collection")
+		return nil, errors.New("error: couldn't read trainings collection")
 	}
 	c, err := trainings.Find(ctx, bson.M{"email": email})
 	if err != nil {
 		return nil, err
 	}
-	err = c.Decode(mongoRes)
-	if err != nil {
-		return nil, err
-	}
-	for _, t := range mongoRes {
+	defer c.Close(ctx)
+	for c.Next(ctx) {
+		var t TrainingByEmail
+		err := c.Decode(&t)
+		if err != nil {
+			log.Fatal(err)
+		}
 		res = append(res, &t.Training)
+	}
+	if c.Err() != nil {
+		return nil, c.Err()
 	}
 	return res, nil
 }
@@ -45,9 +50,9 @@ func (s *Storage) InsertTraining(ctx context.Context, email string, training tra
 	ctx, _ = context.WithTimeout(ctx, time.Second*2)
 	trainings := s.usersDatabase.Collection("trainings")
 	if trainings == nil {
-		return errors.New("error: couldn't access users collection")
+		return errors.New("error: couldn't insert trainings collection")
 	}
-	_, err := trainings.InsertOne(ctx, &TrainingByEmail{
+	_, err := trainings.InsertOne(ctx, TrainingByEmail{
 		Email:    email,
 		Training: training,
 	})

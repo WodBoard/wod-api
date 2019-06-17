@@ -2,7 +2,6 @@ package routes
 
 import (
 	"context"
-	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -26,7 +25,6 @@ func (h *Handler) Signup(c *gin.Context) {
 		c.AbortWithStatus(http.StatusInternalServerError)
 		return
 	}
-	fmt.Println("body: ", string(body))
 	err = jsonpb.UnmarshalString(string(body), &req)
 	if err != nil {
 		log.Println(

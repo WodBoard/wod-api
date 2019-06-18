@@ -3,14 +3,14 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:48af229492df23fad1ac329ddfeae1864ddc748551721b4507de8fc18aff211e"
+  digest = "1:295bb5a67c26604da386b9df48dbcee1117d581f5ba57e7a5ba12aa3883ae9df"
   name = "github.com/WodBoard/models"
   packages = [
     "training/go",
     "user/go",
   ]
   pruneopts = "UT"
-  revision = "45068ea7e162ea7297465c7b1f1c42453d1fd9f3"
+  revision = "19cd4520ec184d5343935aab3aa003c006f41513"
 
 [[projects]]
   digest = "1:69f5f537d94e41742dfffed2f11ba0f95d6a803cf6ad63ac79e20b6a27948aca"
@@ -195,7 +195,7 @@
   name = "golang.org/x/sys"
   packages = ["unix"]
   pruneopts = "UT"
-  revision = "15dcb6c0061f497a3f66e3ea034b629c6dd4d99e"
+  revision = "516e3c20635fbe39539f7ed361a15c51fec29cd8"
 
 [[projects]]
   digest = "1:1093f2eb4b344996604f7d8b29a16c5b22ab9e1b25652140d3fede39f640d5cd"

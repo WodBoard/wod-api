@@ -82,7 +82,7 @@ Date: Sun, 16 Jun 2019 17:30:52 GMT
     "firstname": "patrice",
     "height": 6.699999809265137,
     "lastname": "michel",
-    "picture_url": "prout.png",
+    "picture_url": "test.png",
     "weight": 3.140000104904175
 }
 ```
@@ -93,7 +93,7 @@ The following endpoints will let you create a new personal training, and also fe
 
 #### Add a new training
 
-This is a POST request with a json body containing your new training characteristics.
+This is a `PUT` request with a json body containing your new training characteristics.
 Json body (./testdata/add_training.json):
 ```
 cat testdata/add_training.json 
@@ -119,6 +119,66 @@ cat testdata/add_training.json
 ```
 
 The actual request to insert it in our database:
+```
+http --json PUT "http://localhost:4242/trainings" "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1NjA4ODkxMjAsImlkIjoicGF0cmljaW9AZ21haWwuY29tIiwib3JpZ19pYXQiOjE1NjA4MDI3MjB9.LYJW3Oy1kaG2-GoH2UXCF1Xk2AGv4O0dx-j4MsFlt1Q" < ./testdata/add_training.json
+HTTP/1.1 200 OK
+Content-Length: 157
+Content-Type: application/json; charset=utf-8
+Date: Mon, 17 Jun 2019 21:17:56 GMT
+
+{
+    "exercises": [
+        {
+            "movement": 1,
+            "name": "Yoga"
+        },
+        {
+            "movement": 2,
+            "name": "Velo"
+        },
+        {
+            "movement": 2,
+            "name": "Tapis"
+        }
+    ],
+    "name": "MyFirstTrainingEver",
+    "time_cap": 6000,
+    "type": 3
+}
+```
+
+- If everything went perfectly, you should be returned an http status of `200` and a json object corresponding to the one you just sent.
+- If not, it is probably that you tried to add an already existing training, and you should be returned a status `400 - Bad request`.
+
+#### Edit an existing training
+
+Same as the previous one but lets you update an existing training (can also create it).
+This is a `POST` request with a json body containing your new training characteristics.
+Json body (./testdata/add_training.json):
+```
+cat testdata/add_training.json 
+{
+   "name":"MyFirstTrainingEver",
+   "type":3,
+   "exercises":[
+      {
+         "movement":1,
+         "name":"Yoga"
+      },
+      {
+         "movement":2,
+         "name":"Velo"
+      },
+      {
+         "movement":2,
+         "name":"Tapis"
+      }
+   ],
+   "time_cap":6000
+}
+```
+
+The actual request to edit it in our database:
 ```
 http --json POST "http://localhost:4242/trainings" "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1NjA4ODkxMjAsImlkIjoicGF0cmljaW9AZ21haWwuY29tIiwib3JpZ19pYXQiOjE1NjA4MDI3MjB9.LYJW3Oy1kaG2-GoH2UXCF1Xk2AGv4O0dx-j4MsFlt1Q" < ./testdata/add_training.json
 HTTP/1.1 200 OK
@@ -147,11 +207,11 @@ Date: Mon, 17 Jun 2019 21:17:56 GMT
 }
 ```
 
-If everything went perfectly, you should be returned an http status of 200 and a json object corresponding to the one you just sent.
+If everything went perfectly, you should be returned an http status of `200` and a json object corresponding to the one you just sent.
 
 #### List your trainings
 
-List your trainings is a simple GET endpoints to retrieve all trainings bound to your account:
+List your trainings is a simple `GET` endpoints to retrieve all trainings bound to your account:
 ```
 http GET "http://localhost:4242/trainings" "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1NjA4ODkxMjAsImlkIjoicGF0cmljaW9AZ21haWwuY29tIiwib3JpZ19pYXQiOjE1NjA4MDI3MjB9.LYJW3Oy1kaG2-GoH2UXCF1Xk2AGv4O0dx-j4MsFlt1Q"
 HTTP/1.1 200 OK
@@ -181,3 +241,17 @@ Date: Mon, 17 Jun 2019 21:30:51 GMT
     }
 ]
 ```
+
+#### Delete an existing Training
+
+To delete an existing training, you have to do a `DELETE` request to the "/trainings" endpoint.
+You need to provide a json body containing the name of the training.
+
+```
+http --json DELETE "http://localhost:4242/trainings" "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1NjA5NzgwMDQsImlkIjoicGF0cmljaW9AZ21haWwuY29tIiwib3JpZ19pYXQiOjE1NjA4OTE2MDR9.YtAtLG_vZjqlTZalIeDGJGYx5ULmK6wLH0wsQLVeJBk" name=MyFirstTrainingEver    
+HTTP/1.1 200 OK
+Content-Length: 0
+Date: Tue, 18 Jun 2019 21:20:24 GMT
+```
+
+If everything worked fine, you should receive a status `200` and the training should be removed from the database.

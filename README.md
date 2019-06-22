@@ -10,7 +10,8 @@ Publicly exposes the REST API routes used by the app. Responses are formatted in
 * `POST` "/signup" - Signup route, takes `email`, `password` and user informations.
 
 *Authenticated:*
-* `GET` "/hello" - Hello is a testing endpoint that returns the currently logged in user informations.
+* `GET` "/profile" - Profile is an endpoint that returns the currently logged in user's informations.
+* `PUT` "/profile" - Profile is an endpoint that returns the currently logged in user's informations.
 * `GET` "/trainings" - List user's trainings.
 * `PUT` "/trainings" - Add a new training to the users' trainings (`name` of the training is unique to the user).
 * `POST` "/trainings" - Edit and updates a existing training by its `name`.
@@ -69,13 +70,13 @@ Date: Thu, 30 May 2019 19:22:25 GMT
 }
 ```
 
-### Hello
+### Profile
 
-To test if everything worked fine, you can try calling the `/hello` endpoint which is one of the authenticated route that requires a token.
+To test if everything worked fine, you can try calling the `/profile` endpoint which is one of the authenticated route that requires a token.
 To do so you need to include the token prefixed by `"Bearer"` (`"Bearer <your-token>"`) in the `Authorization` header:
 
 ```
-http GET "http://localhost:4242/hello" "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1NTkzMjg5MjksImlkIjoicGF0cmljZUBnbWFpbC5jb20iLCJvcmlnX2lhdCI6MTU1OTI0MjUyOX0.iQEZbeD6GyZ9EsTeXFq574UhW4mBPGq-JRut0s4QvG4"
+http GET "http://localhost:4242/profile" "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1NTkzMjg5MjksImlkIjoicGF0cmljZUBnbWFpbC5jb20iLCJvcmlnX2lhdCI6MTU1OTI0MjUyOX0.iQEZbeD6GyZ9EsTeXFq574UhW4mBPGq-JRut0s4QvG4"
 ```
 
 If you specified a correct token, the http response should have a 200 status and the json content should be like the following:

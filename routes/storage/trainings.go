@@ -51,11 +51,11 @@ func (s *Storage) GetTraining(ctx context.Context, email, name string) (*trainin
 	var res training.Training
 
 	ctx, _ = context.WithTimeout(ctx, time.Second*2)
-	users := s.usersDatabase.Collection("trainings")
-	if users == nil {
+	trainings := s.usersDatabase.Collection("trainings")
+	if trainings == nil {
 		return nil, errors.New("error: couldn't fetch login collection")
 	}
-	err := users.FindOne(ctx, bson.M{
+	err := trainings.FindOne(ctx, bson.M{
 		"email": email,
 		"name":  name,
 	}).
@@ -64,6 +64,27 @@ func (s *Storage) GetTraining(ctx context.Context, email, name string) (*trainin
 		return nil, err
 	}
 	return &res, nil
+}
+
+// UpdateTraining updates one training by its name
+func (s *Storage) UpdateTraining(ctx context.Context, email, name string, training training.Training) error {
+	ctx, _ = context.WithTimeout(ctx, time.Second*2)
+	trainings := s.usersDatabase.Collection("trainings")
+	if trainings == nil {
+		return errors.New("error: couldn't fetch login collection")
+	}
+	res := trainings.FindOneAndUpdate(ctx, bson.M{
+		"email": email,
+		"name":  name,
+	}, &TrainingByEmail{
+		Email:    email,
+		Name:     name,
+		Training: training,
+	})
+	if res.Err() != nil {
+		return res.Err()
+	}
+	return nil
 }
 
 // InsertTraining inserts a new training in mongo bound by user email

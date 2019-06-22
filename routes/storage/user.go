@@ -38,3 +38,17 @@ func (s *Storage) InsertUser(ctx context.Context, user *user.User) error {
 	}
 	return nil
 }
+
+// UpdateUserByMail inserts a new user in mongo
+func (s *Storage) UpdateUserByMail(ctx context.Context, email string, user *user.User) error {
+	ctx, _ = context.WithTimeout(ctx, time.Second*2)
+	users := s.usersDatabase.Collection("users")
+	if users == nil {
+		return errors.New("error: couldn't access users collection")
+	}
+	res := users.FindOneAndUpdate(ctx, bson.M{"email": email}, user)
+	if res.Err() != nil {
+		return res.Err()
+	}
+	return nil
+}

@@ -107,18 +107,7 @@ func (h *Handler) EditTraining(c *gin.Context) {
 		c.AbortWithStatus(http.StatusBadRequest)
 		return
 	}
-	err = h.Storage.DeleteTraining(ctx, email.(string), req.GetName())
-	if err != nil {
-		log.Println(
-			"err", err,
-			"msg", "couldn't delete user training",
-			"email", email,
-			"name", req.GetName(),
-		)
-		c.Status(http.StatusInternalServerError)
-		return
-	}
-	err = h.Storage.InsertTraining(ctx, email.(string), req)
+	err = h.Storage.UpdateTraining(ctx, email.(string), req.GetName(), req)
 	if err != nil {
 		log.Println(
 			"err", err,

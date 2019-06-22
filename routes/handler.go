@@ -72,7 +72,8 @@ func (h *Handler) HandleRoutes() {
 	auth := api.Group("/")
 	{
 		auth.Use(authMiddleware.MiddlewareFunc())
-		auth.GET("/hello", h.Hello)
+		auth.GET("/profile", h.Profile)
+		auth.PUT("/profile", h.EditProfile)
 		auth.GET("/trainings", h.ListTrainings)
 		auth.PUT("/trainings", h.AddTraining)
 		auth.POST("/trainings", h.EditTraining)

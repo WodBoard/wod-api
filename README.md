@@ -5,6 +5,17 @@ The API of Wodboard is the main server of our working of the day app.
 
 Publicly exposes the REST API routes used by the app. Responses are formatted in JSON.
 
+*Public:*
+* `POST` "/login" - Login route, takes `email` and `password` as arguments.
+* `POST` "/signup" - Signup route, takes `email`, `password` and user informations.
+
+*Authenticated:*
+* `GET` "/hello" - Hello is a testing endpoint that returns the currently logged in user informations.
+* `GET` "/trainings" - List user's trainings.
+* `PUT` "/trainings" - Add a new training to the users' trainings (`name` of the training is unique to the user).
+* `POST` "/trainings" - Edit and updates a existing training by its `name`.
+* `DELETE` "/trainings" - Delete an existing training in the user training list.
+
 ## Database
 
 Contains various methods to handle the storage of our different models in a mongodb database.

@@ -72,6 +72,8 @@ Date: Thu, 30 May 2019 19:22:25 GMT
 
 ### Profile
 
+#### Get your profile
+
 To test if everything worked fine, you can try calling the `/profile` endpoint which is one of the authenticated route that requires a token.
 To do so you need to include the token prefixed by `"Bearer"` (`"Bearer <your-token>"`) in the `Authorization` header:
 
@@ -95,9 +97,14 @@ Date: Sun, 16 Jun 2019 17:30:52 GMT
     "height": 6.699999809265137,
     "lastname": "michel",
     "picture_url": "test.png",
-    "weight": 3.140000104904175
+    "weight": 3.140000104904175,
+    "affiliated_box": "La salle de Patrice"
 }
 ```
+
+#### Edit your profile
+
+To edit your profile, you need to call `PUT /profile` and insert a `User` structure, it will return you a `200` if everything worked fine.
 
 ### Trainings
 

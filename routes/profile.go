@@ -28,7 +28,18 @@ func (h *Handler) Profile(c *gin.Context) {
 		c.Status(http.StatusInternalServerError)
 		return
 	}
-	c.JSON(200, user)
+	userJSON, err := h.marshaler.MarshalToString(user)
+	if err != nil {
+		log.Println(
+			"err", err,
+			"msg", "couldn't marshal user to json",
+			"email", email,
+		)
+		c.Status(http.StatusInternalServerError)
+		return
+	}
+	c.Status(200)
+	c.Writer.WriteString(userJSON)
 }
 
 // EditProfile is a basic endpoint just for example

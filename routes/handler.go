@@ -8,15 +8,17 @@ import (
 	"github.com/WodBoard/wod-api/routes/storage"
 	jwt "github.com/appleboy/gin-jwt"
 	"github.com/gin-gonic/gin"
+	jsonpb "github.com/golang/protobuf/jsonpb"
 )
 
 var identityKey = "id"
 
 // Handler is defines the structure handling every route
 type Handler struct {
-	Storage *storage.Storage
-	engine  *gin.Engine
-	addr    string
+	Storage   *storage.Storage
+	engine    *gin.Engine
+	marshaler jsonpb.Marshaler
+	addr      string
 }
 
 // NewHandler returns a fresh instance of Handler struct
@@ -26,6 +28,10 @@ func NewHandler(storage *storage.Storage, addr string) *Handler {
 		Storage: storage,
 		engine:  e,
 		addr:    addr,
+		marshaler: jsonpb.Marshaler{
+			EnumsAsInts: true,
+			EmitDefaults: true,
+		},
 	}
 }
 

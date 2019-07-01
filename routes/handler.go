@@ -128,9 +128,12 @@ func (h *Handler) HandleRoutes() {
 		auth.GET("/profile", h.Profile)
 		auth.PUT("/profile", h.EditProfile)
 		auth.GET("/trainings", h.ListTrainings)
-		auth.PUT("/trainings", h.AddTraining)
-		auth.POST("/trainings", h.EditTraining)
+		auth.POST("/trainings", h.AddTraining)
+		auth.PUT("/trainings", h.EditTraining)
 		auth.DELETE("/trainings", h.DeleteTraining)
+		auth.GET("/movementRecords", h.ListMovementRecords)
+		auth.POST("/movementRecords", h.AddMovementRecord)
+		auth.DELETE("/movementRecords", h.DeleteMovementRecord)
 	}
 	h.engine.Run(h.addr)
 }

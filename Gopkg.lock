@@ -3,14 +3,15 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:3450d60b5cdab36761aea5ac5ea2ef3ba01aedc37b70b445c48278eb95e9858d"
+  digest = "1:4efbba0957691b658f07738b4ddff0541cee38ab380829a0e451f5403e72b9c2"
   name = "github.com/WodBoard/models"
   packages = [
+    "movement_record/go",
     "training/go",
     "user/go",
   ]
   pruneopts = "UT"
-  revision = "2d0e19e2583022f8853baa1c9976de0ac8c81020"
+  revision = "d138fa38285de0aa34cba600785ddba290c06824"
 
 [[projects]]
   digest = "1:69f5f537d94e41742dfffed2f11ba0f95d6a803cf6ad63ac79e20b6a27948aca"
@@ -179,7 +180,7 @@
   name = "golang.org/x/crypto"
   packages = ["pbkdf2"]
   pruneopts = "UT"
-  revision = "cc06ce4a13d484c0101a9e92913248488a75786d"
+  revision = "4def268fd1a49955bfb3dda92fe3db4f924f2285"
 
 [[projects]]
   branch = "master"
@@ -191,11 +192,11 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:a2b03582f5805ebb5d96482a0ea550d48aba5347cc5089d89d2307ac55b98660"
+  digest = "1:730ba27cd66db3b98ec8f51a6f20d45ec277d490cca36b1f54e31d3fcaf4840e"
   name = "golang.org/x/sys"
   packages = ["unix"]
   pruneopts = "UT"
-  revision = "d432491b91382bba9c2a91776aa47c9430183a6f"
+  revision = "04f50cda93cbb67f2afa353c52f342100e80e625"
 
 [[projects]]
   digest = "1:1093f2eb4b344996604f7d8b29a16c5b22ab9e1b25652140d3fede39f640d5cd"
@@ -243,11 +244,13 @@
   analyzer-name = "dep"
   analyzer-version = 1
   input-imports = [
+    "github.com/WodBoard/models/movement_record/go",
     "github.com/WodBoard/models/training/go",
     "github.com/WodBoard/models/user/go",
     "github.com/appleboy/gin-jwt",
     "github.com/gin-gonic/gin",
     "github.com/golang/protobuf/jsonpb",
+    "github.com/golang/protobuf/proto",
     "go.mongodb.org/mongo-driver/mongo",
     "go.mongodb.org/mongo-driver/mongo/options",
     "gopkg.in/mgo.v2/bson",

@@ -112,7 +112,7 @@ The following endpoints will let you create a new personal training, and also fe
 
 #### Add a new training
 
-This is a `PUT` request with a json body containing your new training characteristics.
+This is a `POST` request with a json body containing your new training characteristics.
 Json body (./testdata/add_training.json):
 ```
 cat testdata/add_training.json 
@@ -139,7 +139,7 @@ cat testdata/add_training.json
 
 The actual request to insert it in our database:
 ```
-http --json PUT "http://localhost:4242/trainings" "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1NjA4ODkxMjAsImlkIjoicGF0cmljaW9AZ21haWwuY29tIiwib3JpZ19pYXQiOjE1NjA4MDI3MjB9.LYJW3Oy1kaG2-GoH2UXCF1Xk2AGv4O0dx-j4MsFlt1Q" < ./testdata/add_training.json
+http --json POST "http://localhost:4242/trainings" "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1NjA4ODkxMjAsImlkIjoicGF0cmljaW9AZ21haWwuY29tIiwib3JpZ19pYXQiOjE1NjA4MDI3MjB9.LYJW3Oy1kaG2-GoH2UXCF1Xk2AGv4O0dx-j4MsFlt1Q" < ./testdata/add_training.json
 HTTP/1.1 200 OK
 Content-Length: 157
 Content-Type: application/json; charset=utf-8
@@ -172,7 +172,7 @@ Date: Mon, 17 Jun 2019 21:17:56 GMT
 #### Edit an existing training
 
 Same as the previous one but lets you update an existing training (can also create it).
-This is a `POST` request with a json body containing your new training characteristics.
+This is a `PUT` request with a json body containing your new training characteristics.
 Json body (./testdata/add_training.json):
 ```
 cat testdata/add_training.json 
@@ -199,7 +199,7 @@ cat testdata/add_training.json
 
 The actual request to edit it in our database:
 ```
-http --json POST "http://localhost:4242/trainings" "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1NjA4ODkxMjAsImlkIjoicGF0cmljaW9AZ21haWwuY29tIiwib3JpZ19pYXQiOjE1NjA4MDI3MjB9.LYJW3Oy1kaG2-GoH2UXCF1Xk2AGv4O0dx-j4MsFlt1Q" < ./testdata/add_training.json
+http --json PUT "http://localhost:4242/trainings" "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1NjA4ODkxMjAsImlkIjoicGF0cmljaW9AZ21haWwuY29tIiwib3JpZ19pYXQiOjE1NjA4MDI3MjB9.LYJW3Oy1kaG2-GoH2UXCF1Xk2AGv4O0dx-j4MsFlt1Q" < ./testdata/add_training.json
 HTTP/1.1 200 OK
 Content-Length: 157
 Content-Type: application/json; charset=utf-8

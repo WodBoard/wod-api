@@ -30,7 +30,7 @@ func (h *Handler) ListTrainings(c *gin.Context) {
 	c.JSON(200, trainings)
 }
 
-// AddTraining is a PUT endpoint that lets the user insert a
+// AddTraining is a POST endpoint that lets the user insert a
 // personal training into our database
 func (h *Handler) AddTraining(c *gin.Context) {
 	var req training.Training
@@ -72,7 +72,7 @@ func (h *Handler) AddTraining(c *gin.Context) {
 	c.Status(200)
 }
 
-// EditTraining is a POST endpoint that lets the user edit
+// EditTraining is a PUT endpoint that lets the user edit
 // a previously created training
 func (h *Handler) EditTraining(c *gin.Context) {
 	var req training.Training

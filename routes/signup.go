@@ -43,7 +43,6 @@ func (h *Handler) Signup(c *gin.Context) {
 
 	err = h.Storage.InsertUser(ctx, &user.User{
 		Email:      req.GetEmail(),
-		Username:   req.GetUsername(),
 		Firstname:  req.GetFirstname(),
 		Lastname:   req.GetLastname(),
 		Birthday:   req.GetBirthday(),

@@ -1,7 +1,9 @@
 package routes
 
 import (
+	"io/ioutil"
 	"log"
+	"net/http"
 	"time"
 
 	user "github.com/WodBoard/models/user/go"
@@ -9,6 +11,7 @@ import (
 	jwt "github.com/appleboy/gin-jwt"
 	"github.com/gin-gonic/gin"
 	jsonpb "github.com/golang/protobuf/jsonpb"
+	"github.com/golang/protobuf/proto"
 )
 
 var identityKey = "id"
@@ -29,10 +32,54 @@ func NewHandler(storage *storage.Storage, addr string) *Handler {
 		engine:  e,
 		addr:    addr,
 		marshaler: jsonpb.Marshaler{
-			EnumsAsInts: true,
+			EnumsAsInts:  true,
 			EmitDefaults: true,
 		},
 	}
+}
+
+// ParseProtoMessage is a helper function to parse incoming Body from
+// gin context and set it to the proto message req
+func (h *Handler) ParseProtoMessage(c *gin.Context, req proto.Message) error {
+	body, err := ioutil.ReadAll(c.Request.Body)
+	if err != nil {
+		log.Println(
+			"err", err,
+			"msg", "couldn't read body of the request",
+			"type", proto.MessageName(req),
+		)
+		c.AbortWithStatus(http.StatusInternalServerError)
+		return err
+	}
+	err = jsonpb.UnmarshalString(string(body), req)
+	if err != nil {
+		log.Println(
+			"err", err,
+			"msg", "couldn't unmarshal "+proto.MessageName(req)+" request",
+		)
+		c.AbortWithStatus(http.StatusBadRequest)
+		return err
+	}
+	return nil
+}
+
+// OutputProtoMessage is a helper func that helps writing a proto message
+// as json object to the response. Also doesn't skip empty fields.
+func (h *Handler) OutputProtoMessage(c *gin.Context, resp proto.Message) error {
+	claims := jwt.ExtractClaims(c)
+	email, _ := claims[identityKey]
+	respJSON, err := h.marshaler.MarshalToString(resp)
+	if err != nil {
+		log.Println(
+			"err", err,
+			"msg", "couldn't marshal "+proto.MessageName(resp)+" to json",
+			"email", email,
+		)
+		c.Status(http.StatusInternalServerError)
+		return err
+	}
+	c.Writer.WriteString(respJSON)
+	return nil
 }
 
 // HandleRoutes defines the bindings between routes and functions

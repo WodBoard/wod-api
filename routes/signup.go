@@ -2,13 +2,11 @@ package routes
 
 import (
 	"context"
-	"io/ioutil"
 	"log"
 	"net/http"
 
 	user "github.com/WodBoard/models/user/go"
 	"github.com/gin-gonic/gin"
-	jsonpb "github.com/golang/protobuf/jsonpb"
 )
 
 // Signup is a basic endpoint just for example
@@ -16,22 +14,8 @@ func (h *Handler) Signup(c *gin.Context) {
 	var req user.Signup
 	ctx := context.Background()
 
-	body, err := ioutil.ReadAll(c.Request.Body)
+	err := h.ParseProtoMessage(c, &req)
 	if err != nil {
-		log.Println(
-			"err", err,
-			"msg", "couldn't read body of the request",
-		)
-		c.AbortWithStatus(http.StatusInternalServerError)
-		return
-	}
-	err = jsonpb.UnmarshalString(string(body), &req)
-	if err != nil {
-		log.Println(
-			"err", err,
-			"msg", "couldn't unmarshal signup request",
-		)
-		c.AbortWithStatus(http.StatusBadRequest)
 		return
 	}
 
@@ -49,7 +33,10 @@ func (h *Handler) Signup(c *gin.Context) {
 		Password: req.GetPassword(),
 	})
 	if err != nil {
-		log.Println("err", err)
+		log.Println(
+			"msg", "couldn't insert login in database",
+			"err", err,
+		)
 		c.AbortWithStatus(http.StatusInternalServerError)
 		return
 	}
@@ -65,7 +52,10 @@ func (h *Handler) Signup(c *gin.Context) {
 		Weight:     float64(req.GetWeight()),
 	})
 	if err != nil {
-		log.Println("err", err)
+		log.Println(
+			"msg", "couldn't insert user in database",
+			"err", err,
+		)
 		c.AbortWithStatus(http.StatusInternalServerError)
 		return
 	}

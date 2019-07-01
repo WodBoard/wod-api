@@ -2,14 +2,12 @@ package routes
 
 import (
 	"context"
-	"io/ioutil"
 	"log"
 	"net/http"
 
 	training "github.com/WodBoard/models/training/go"
 	jwt "github.com/appleboy/gin-jwt"
 	"github.com/gin-gonic/gin"
-	jsonpb "github.com/golang/protobuf/jsonpb"
 )
 
 // ListTrainings is a GET endpoint that returns an array of trainings
@@ -40,24 +38,11 @@ func (h *Handler) AddTraining(c *gin.Context) {
 	claims := jwt.ExtractClaims(c)
 	email, _ := claims[identityKey]
 
-	body, err := ioutil.ReadAll(c.Request.Body)
+	err := h.ParseProtoMessage(c, &req)
 	if err != nil {
-		log.Println(
-			"err", err,
-			"msg", "couldn't read body of the request",
-		)
-		c.AbortWithStatus(http.StatusInternalServerError)
 		return
 	}
-	err = jsonpb.UnmarshalString(string(body), &req)
-	if err != nil {
-		log.Println(
-			"err", err,
-			"msg", "couldn't unmarshal add training request",
-		)
-		c.AbortWithStatus(http.StatusBadRequest)
-		return
-	}
+
 	t, err := h.Storage.GetTraining(ctx, email.(string), req.GetName())
 	if err == nil || t != nil {
 		log.Println(
@@ -78,7 +63,13 @@ func (h *Handler) AddTraining(c *gin.Context) {
 		c.Status(http.StatusInternalServerError)
 		return
 	}
-	c.JSON(200, &req)
+
+	err = h.OutputProtoMessage(c, &req)
+	if err != nil {
+		return
+	}
+
+	c.Status(200)
 }
 
 // EditTraining is a POST endpoint that lets the user edit
@@ -89,24 +80,11 @@ func (h *Handler) EditTraining(c *gin.Context) {
 	claims := jwt.ExtractClaims(c)
 	email, _ := claims[identityKey]
 
-	body, err := ioutil.ReadAll(c.Request.Body)
+	err := h.ParseProtoMessage(c, &req)
 	if err != nil {
-		log.Println(
-			"err", err,
-			"msg", "couldn't read body of the request",
-		)
-		c.AbortWithStatus(http.StatusInternalServerError)
 		return
 	}
-	err = jsonpb.UnmarshalString(string(body), &req)
-	if err != nil {
-		log.Println(
-			"err", err,
-			"msg", "couldn't unmarshal add training request",
-		)
-		c.AbortWithStatus(http.StatusBadRequest)
-		return
-	}
+
 	err = h.Storage.UpdateTraining(ctx, email.(string), req.GetName(), req)
 	if err != nil {
 		log.Println(
@@ -118,7 +96,13 @@ func (h *Handler) EditTraining(c *gin.Context) {
 		c.Status(http.StatusInternalServerError)
 		return
 	}
-	c.JSON(200, &req)
+
+	err = h.OutputProtoMessage(c, &req)
+	if err != nil {
+		return
+	}
+
+	c.Status(200)
 }
 
 // DeleteTraining is a DELETE endpoint that lets the user delete a
@@ -129,24 +113,11 @@ func (h *Handler) DeleteTraining(c *gin.Context) {
 	claims := jwt.ExtractClaims(c)
 	email, _ := claims[identityKey]
 
-	body, err := ioutil.ReadAll(c.Request.Body)
+	err := h.ParseProtoMessage(c, &req)
 	if err != nil {
-		log.Println(
-			"err", err,
-			"msg", "couldn't read body of the request",
-		)
-		c.AbortWithStatus(http.StatusInternalServerError)
 		return
 	}
-	err = jsonpb.UnmarshalString(string(body), &req)
-	if err != nil {
-		log.Println(
-			"err", err,
-			"msg", "couldn't unmarshal add training request",
-		)
-		c.AbortWithStatus(http.StatusBadRequest)
-		return
-	}
+
 	err = h.Storage.DeleteTraining(ctx, email.(string), req.GetName())
 	if err != nil {
 		log.Println(

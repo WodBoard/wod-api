@@ -3,7 +3,7 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:4efbba0957691b658f07738b4ddff0541cee38ab380829a0e451f5403e72b9c2"
+  digest = "1:d21176fad379492534a6a13a08ede9053105ff576acaec7d68cdfebc11e2bff5"
   name = "github.com/WodBoard/models"
   packages = [
     "movement_record/go",
@@ -11,7 +11,7 @@
     "user/go",
   ]
   pruneopts = "UT"
-  revision = "d138fa38285de0aa34cba600785ddba290c06824"
+  revision = "3cb970fb70a268991a245970435880185bb42272"
 
 [[projects]]
   digest = "1:69f5f537d94e41742dfffed2f11ba0f95d6a803cf6ad63ac79e20b6a27948aca"
@@ -59,13 +59,12 @@
   version = "v1.8.0"
 
 [[projects]]
-  digest = "1:2c4aee153877ce0ab02a8025fb54bb94debd47301576a6ab06d53f9b3e2a3a27"
+  digest = "1:1d82405f30f13f12539bc10a480ac0c8e2a0852d95d568af38ee232a3f4e2d1b"
   name = "github.com/golang/protobuf"
   packages = [
     "jsonpb",
     "proto",
     "ptypes/struct",
-    "ptypes/timestamp",
   ]
   pruneopts = "UT"
   revision = "b5d812f8a3706043e23a9cd5babf2e5423744d30"
